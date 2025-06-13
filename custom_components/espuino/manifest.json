@@ -2,7 +2,7 @@
   "domain": "espuino",
   "name": "ESPuino Integration",
   "version": "1.0.0",
-  "documentation": "https://github.com/",
+  "documentation": "https://github.com/DexXxter007/ESPuino_HA_Integration",
   "dependencies": ["mqtt"],
   "codeowners": ["@DexXxter007"],
   "requirements": [],
