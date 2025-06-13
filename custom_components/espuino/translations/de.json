@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mit ESPuino verbinden",
+        "description": "Gib die IP-Adresse deines ESPuino ein",
+        "data": {
+          "ip_address": "IP-Adresse"
+        }
+      }
+    }
+  }
+}
