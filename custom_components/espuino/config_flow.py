@@ -31,7 +31,7 @@ class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         # Prepare default values for the form
         # If user_input is None (initial form display), use empty strings or predefined defaults.
         # If user_input is not None (form re-displayed after an attempt), use previous values.
-        device_name_default = "ESPunio"
+        device_name_default = "ESPuino"
         friendly_name_default = ""
 
         if user_input is not None:
