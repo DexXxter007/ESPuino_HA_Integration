@@ -8,7 +8,7 @@ from homeassistant.components.mqtt import (
     async_subscribe as mqtt_async_subscribe,
     async_publish as mqtt_async_publish
 )
-from .const import DOMAIN, CONF_DEVICE_NAME, DEFAULT_MQTT_BASE_TOPIC
+from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, DEFAULT_MQTT_BASE_TOPIC
 
 _LOGGER = logging.getLogger(__name__) # Initialize logger for this module
 
@@ -20,8 +20,9 @@ class EspuinoMqttEntity(Entity):
         self._entry = entry
         self._attr_has_entity_name = True # For newer HA versions, uses entity_description.name
 
-        # Get the configured device name
+        # Get the configured names
         self._device_name = entry.data[CONF_DEVICE_NAME]
+        self._friendly_name = entry.data.get(CONF_FRIENDLY_NAME, self._device_name) # Fallback to device_name if friendly_name is somehow missing
 
         # entry.unique_id from config_flow is now self._device_name
         # entity_description_key should be unique per entity type (e.g., "track_state", "loudness")
@@ -33,8 +34,8 @@ class EspuinoMqttEntity(Entity):
     def device_info(self) -> DeviceInfo:
         """Return device information about this ESPuino device."""
         return DeviceInfo(
-            identifiers={(DOMAIN, self._device_name)},  # Use configured device name
-            name=f"ESPuino ({self._device_name})",
+            identifiers={(DOMAIN, self._device_name)},  # Use MQTT device name as unique identifier
+            name=self._friendly_name, # Use the friendly name from config for display
             manufacturer="ESPuino Community",
             # model="ESPuino vX.Y", # Could be fetched via MQTT (e.g., from SRevisionState)
             # sw_version=... # Could be fetched via MQTT
