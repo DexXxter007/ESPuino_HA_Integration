@@ -2,12 +2,16 @@
   "config": {
     "step": {
       "user": {
-        "title": "Mit ESPuino verbinden",
-        "description": "Gib die IP-Adresse deines ESPuino ein",
+        "title": "ESPuino konfigurieren",
+        "description": "Bitte gib die Details für deinen ESPuino ein.",
         "data": {
-          "ip_address": "IP-Adresse"
+          "device_name": "MQTT Gerätename (ID) Standard: ESPuino",
+          "friendly_name": "Anzeigename in Home Assistant"
         }
       }
+    },
+    "abort": {
+      "already_configured": "Ein ESPuino mit diesem Gerätenamen ist bereits konfiguriert."
     }
   }
 }
