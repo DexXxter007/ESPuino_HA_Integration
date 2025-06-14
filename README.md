@@ -50,9 +50,38 @@ After restarting Home Assistant:
 
 1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **ESPuino Integration**
-3. Select your MQTT-enabled ESPuino or enter the MQTT topic details manually
+3. Enter the MQTT topic ID manually, 
 4. You're done – entities will be created automatically
 
+## 📡 Required ESPuino MQTT Configuration
+
+For this integration to work correctly, your `settings.h` file in the ESPuino firmware must be properly configured with MQTT support.
+
+Below is an example snippet that shows how to define MQTT topics:
+
+```cpp
+#ifdef MQTT_ENABLE
+  constexpr uint16_t mqttRetryInterval = 60;
+  constexpr uint8_t mqttMaxRetriesPerInterval = 1;
+  #define DEVICE_HOSTNAME "ESP32-ESPuino" // Default MQTT ID
+  constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino/Sleep";
+  constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
+```
+## ⚠️ Important for multi-device setups
+
+The default MQTT ID is ESPuino.
+If you're using multiple ESPuino devices, each one must have a unique MQTT ID.
+To do this, change DEVICE_HOSTNAME in settings.h and adjust all MQTT topics accordingly.
+
+For example:
+```cpp
+#ifdef MQTT_ENABLE
+  constexpr uint16_t mqttRetryInterval = 60;
+  constexpr uint8_t mqttMaxRetriesPerInterval = 1;
+  #define DEVICE_HOSTNAME "ESP32-ESPuino_Paul" // Change Name
+  constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino_Paul/Sleep";
+  constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
+```
 ---
 
 ## 🧪 Example Entities
