@@ -50,8 +50,11 @@ After restarting Home Assistant:
 
 1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **ESPuino Integration**
-3. Enter the MQTT topic ID manually, 
+3. Enter a Name manually, 
 4. You're done – entities will be created automatically
+
+![Default MQTT Config](image/Screenshot%202025-06-14%20091551.png)
+
 
 ## 📡 Required ESPuino MQTT Configuration
 
@@ -82,6 +85,8 @@ For example:
   constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino_Paul/Sleep";
   constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
 ```
+![Change MQTT Config](image/Screenshot%202025-06-14%20091619.png)
+
 ---
 
 ## 🧪 Example Entities
