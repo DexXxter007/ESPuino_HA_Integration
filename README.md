@@ -67,7 +67,7 @@ After restarting Home Assistant:
 4. You're done – entities will be created automatically
 
 <p align="center">
-  <img src="image/Screenshot%202025-06-14%20091551.png" width="300" alt="Default MQTT Config">
+  <img src="image/1.png" width="300" alt="Default MQTT Config">
 </p>
 
 
@@ -102,7 +102,7 @@ For example:
 ```
 
 <p align="center">
-  <img src="image/Screenshot%202025-06-14%20091619.png" width="300" alt="Change MQTT Config">
+  <img src="image/2.png" width="300" alt="Change MQTT Config">
 </p>
 
 
