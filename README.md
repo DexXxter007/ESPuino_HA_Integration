@@ -2,61 +2,62 @@
 
 <img src="https://raw.githubusercontent.com/DexXxter007/ESPuino_HA_Integration/main/custom_components/espuino/icon.png" width="100" align="right" />
 
-Integriere deinen [ESPuino](https://github.com/biologist79/ESPuino) RFID-Audioplayer vollständig in Home Assistant! Diese benutzerdefinierte Integration ermöglicht es dir, den ESPuino über MQTT direkt aus Home Assistant zu steuern und Statusinformationen zu überwachen.
+Fully integrate your [ESPuino](https://github.com/biologist79/ESPuino) RFID audio player into Home Assistant!  
+This custom integration lets you control ESPuino via MQTT and monitor its status directly from Home Assistant.
 
 ---
 
 ## 🔧 Features
 
-- Mediensteuerung (Play, Pause, Nächstes/Vorheriges Lied, Lautstärke)
-- Anzeige von Titelinformationen über MQTT
-- Steuerung von Sperre, Sleep-Timer und weiteren Funktionen
-- UI-Integration über Config Flow
-- Kompatibel mit Home Assistant 2023.x+
+- Media control (play, pause, next/previous track, volume)
+- Display current track information via MQTT
+- Control lock, sleep timer, and other functions
+- UI integration via Config Flow
+- Compatible with Home Assistant 2023.x+
 
 ---
 
-## 📦 Voraussetzungen
+## 📦 Requirements
 
-- Ein laufender MQTT-Broker
-- Ein konfigurierter [ESPuino](https://github.com/ESPuino/ESPuino), der MQTT verwendet
-- Home Assistant mit aktivierter MQTT-Integration
+- A running MQTT broker
+- A properly configured [ESPuino](https://github.com/biologist79/ESPuino) device with MQTT enabled
+- Home Assistant with MQTT integration set up
 
 ---
 
 ## 🚀 Installation
 
-### Über HACS (empfohlen)
+### Via HACS (recommended)
 
-1. HACS öffnen → **Integrationen** → Drei-Punkte-Menü → **Benutzerdefiniertes Repository hinzufügen**
-2. Repository-URL: `https://github.com/DexXxter007/ESPuino_HA_Integration`
-3. Kategorie: `Integration`
-4. Nach dem Hinzufügen: In HACS nach `ESPuino Integration` suchen und installieren
-5. Home Assistant neustarten
+1. Open HACS → **Integrations** → Three-dot menu → **Custom repositories**
+2. Add the repository: `https://github.com/DexXxter007/ESPuino_HA_Integration`
+3. Category: `Integration`
+4. After adding, search for `ESPuino Integration` in HACS and install it
+5. Restart Home Assistant
 
-### Manuell
+### Manual Installation
 
-1. Lade [das ZIP-Archiv](https://github.com/DexXxter007/ESPuino_HA_Integration/archive/refs/heads/main.zip) herunter
-2. Entpacke es nach:  
+1. Download the [ZIP archive](https://github.com/DexXxter007/ESPuino_HA_Integration/archive/refs/heads/main.zip)
+2. Extract it into:  
    `<config>/custom_components/espuino/`
-3. Home Assistant neustarten
+3. Restart Home Assistant
 
 ---
 
-## ⚙️ Einrichtung
+## ⚙️ Setup
 
-Nach dem Neustart:
+After restarting Home Assistant:
 
-1. Gehe zu **Einstellungen → Geräte & Dienste → Integration hinzufügen**
-2. Suche nach **ESPuino Integratin**
-3. Wähle deinen MQTT-basierten ESPuino aus oder gib die Topic-Informationen manuell ein
-4. Fertig – deine Entitäten werden automatisch erstellt
+1. Go to **Settings → Devices & Services → Add Integration**
+2. Search for **ESPuino Integration**
+3. Select your MQTT-enabled ESPuino or enter the MQTT topic details manually
+4. You're done – entities will be created automatically
 
 ---
 
-## 🧪 Beispiel-Entitäten
+## 🧪 Example Entities
 
-Nach der Einrichtung stehen dir unter anderem folgende Entitäten zur Verfügung:
+Once set up, the following entities will be available:
 
 - `media_player.espuino`
 - `sensor.espuino_track`
@@ -66,28 +67,28 @@ Nach der Einrichtung stehen dir unter anderem folgende Entitäten zur Verfügung
 
 ---
 
-## 🛠️ Fehlerbehebung
+## 🛠️ Troubleshooting
 
-- **Integration wird nicht erkannt:** Stelle sicher, dass `custom_components/espuino` korrekt im config-Verzeichnis liegt
-- **MQTT funktioniert nicht:** Überprüfe deine MQTT-Topics und Broker-Verbindung
-- **HACS-Warnung:** Stelle sicher, dass du ein [Release mit Tag](https://github.com/DexXxter007/ESPuino_HA_Integration/releases) verwendest (`v1.0.0`, etc.)
+- **Integration not found:** Make sure `custom_components/espuino` exists in your config folder
+- **MQTT not working:** Check your MQTT topics and broker connection
+- **HACS warning:** Ensure you're using a [tagged release](https://github.com/DexXxter007/ESPuino_HA_Integration/releases) (`v1.0.0`, etc.)
 
 ---
 
 ## 🗒️ Changelog
 
 ### v1.0.0
-- Initiale Version mit Mediensteuerung und MQTT-Support
+- Initial release with media player support and MQTT integration
 
 ---
 
 ## 👤 Credits
 
-- [DexXxter007](https://github.com/DexXxter007) – Entwicklung
-- [biologist79](https://github.com/biologist79/ESPuino) – ESPUino Projekt Hardware & Firmware
+- [DexXxter007](https://github.com/DexXxter007) – Development
+- [biologist79](https://github.com/biologist79/ESPuino) – ESPuino project (hardware & firmware)
 
 ---
 
-## 🪪 Lizenz
+## 🪪 License
 
-MIT License – frei zur Verwendung, Modifikation und Verbreitung.
+MIT License – free to use, modify, and distribute.
