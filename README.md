@@ -53,7 +53,9 @@ After restarting Home Assistant:
 3. Enter a Name manually, 
 4. You're done – entities will be created automatically
 
-![Default MQTT Config](image/Screenshot%202025-06-14%20091551.png)
+<p align="center">
+  <img src="image/Screenshot%202025-06-14%20091551.png" width="300" alt="Default MQTT Config">
+</p>
 
 
 ## 📡 Required ESPuino MQTT Configuration
@@ -85,7 +87,11 @@ For example:
   constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino_Paul/Sleep";
   constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
 ```
-![Change MQTT Config](image/Screenshot%202025-06-14%20091619.png)
+
+<p align="center">
+  <img src="image/Screenshot%202025-06-14%20091619.png" width="300" alt="Change MQTT Config">
+</p>
+
 
 ---
 
