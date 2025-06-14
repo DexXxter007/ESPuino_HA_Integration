@@ -7,6 +7,16 @@ This custom integration lets you control ESPuino via MQTT and monitor its status
 
 ---
 
+[![Static Badge](https://img.shields.io/badge/HACS-Custom-41BDF5?style=for-the-badge&logo=homeassistantcommunitystore&logoColor=white)](https://github.com/hacs/integration) 
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/DexXxter007/ESPuino_HA_Integration/total?style=for-the-badge)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/DexXxter007/ESPuino_HA_Integration?style=for-the-badge)
+
+![GitHub Release Date](https://img.shields.io/github/release-date-pre/DexXxter007/ESPuino_HA_Integration?style=for-the-badge&label=Latest%20Beta%20Release) [![GitHub Release](https://img.shields.io/github/v/release/DexXxter007/ESPuino_HA_Integration?include_prereleases&style=for-the-badge)](https://github.com/DexXxter007/ESPuino_HA_Integration/releases)
+
+![GitHub Release Date](https://img.shields.io/github/release-date/DexXxter007/ESPuino_HA_Integration?style=for-the-badge&label=Latest%20Release) [![GitHub Release](https://img.shields.io/github/v/release/DexXxter007/ESPuino_HA_Integration?style=for-the-badge)](https://github.com/DexXxter007/ESPuino_HA_Integration/releases)
+
+
+---
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=DexXxter007&repository=ESPuino_HA_Integration&category=Integration)
 
 
