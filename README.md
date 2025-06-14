@@ -7,6 +7,9 @@ This custom integration lets you control ESPuino via MQTT and monitor its status
 
 ---
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=DexXxter007&repository=ESPuino_HA_Integration&category=Integration)
+
+
 ## 🔧 Features
 
 - Media control (play, pause, next/previous track, volume)
