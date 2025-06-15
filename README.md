@@ -1,5 +1,6 @@
 # ESPuino Home Assistant Integration
 
+<p align="center">
   <img src="image/icon.png" width="200" alt="">
 </p>
 
