@@ -1,6 +1,6 @@
 # ESPuino Home Assistant Integration
 
-<img src="https://github.com/DexXxter007/ESPuino_HA_Integration/tree/main/image/icon.png" width="100" align="right" />
+<img src="https://github.com/DexXxter007/ESPuino_HA_Integration/image/icon.png" width="100" align="right" />
 
 Fully integrate your [ESPuino](https://github.com/biologist79/ESPuino) RFID audio player into Home Assistant!  
 This custom integration lets you control ESPuino via MQTT and monitor its status directly from Home Assistant.
