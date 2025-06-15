@@ -1,7 +1,7 @@
 {
   "domain": "espuino",
   "name": "ESPuino Integration",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "documentation": "https://github.com/DexXxter007/ESPuino_HA_Integration",
   "dependencies": ["mqtt"],
   "codeowners": ["@DexXxter007"],
