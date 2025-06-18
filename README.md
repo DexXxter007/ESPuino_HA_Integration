@@ -1,8 +1,6 @@
 # ESPuino Home Assistant Integration
 
-<p align="left">
-  <img src="image/icon.png" width="150" alt="">
-</p>
+![Logo](image/icon.png)
 
 ---
 
