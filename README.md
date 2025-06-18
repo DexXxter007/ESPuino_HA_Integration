@@ -1,6 +1,6 @@
 # ESPuino Home Assistant Integration
 
-<img src="image/logo.png" alt="" width="150"/>
+<img src="image/icon.png" alt="" width="150"/>
 
 
 ---
@@ -69,7 +69,7 @@ After restarting Home Assistant:
 3. Enter a Name manually, 
 4. You're done – entities will be created automatically
 
-<img src="image/1.png" alt="Default Config" width="200"/>
+<img src="image/1.png" alt="Default Config" width="300"/>
 
 
 ## 📡 Required ESPuino MQTT Configuration
@@ -102,7 +102,7 @@ For example:
   constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
 ```
 
-<img src="image/2.png" alt="add Name" width="150"/>
+<img src="image/2.png" alt="add Name" width="300"/>
 
 
 ---
