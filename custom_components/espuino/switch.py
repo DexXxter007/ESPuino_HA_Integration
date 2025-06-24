@@ -15,10 +15,9 @@ from .const import (
 )
 from .entity import EspuinoMqttEntity
 
-_LOGGER = logging.getLogger(__name__)
-
 PAYLOAD_ON = "ON"
 PAYLOAD_OFF = "OFF"
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -72,3 +71,7 @@ class EspuinoLockControlsSwitch(EspuinoMqttEntity, SwitchEntity):
 
     async def async_turn_off(self, **kwargs) -> None:
         await self.async_publish_mqtt(self._command_topic_suffix, PAYLOAD_OFF)
+
+    @callback
+    def _clear_entity_state(self):
+        self._attr_is_on = None

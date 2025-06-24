@@ -86,6 +86,10 @@ class EspuinoTrackSensor(EspuinoMqttEntity, SensorEntity):
         self._attr_native_value = msg.payload
         self.async_write_ha_state()
 
+    @callback
+    def _clear_entity_state(self):
+        self._attr_native_value = None
+
 
 # Basisklasse für einfache Text/Zahlen-Sensoren
 class EspuinoSimpleSensor(EspuinoMqttEntity, SensorEntity):
@@ -154,6 +158,10 @@ class EspuinoSimpleSensor(EspuinoMqttEntity, SensorEntity):
             "EspuinoSimpleSensor (%s) new native_value: %s", self.entity_id, self._attr_native_value
         )
         self.async_write_ha_state()
+
+    @callback
+    def _clear_entity_state(self):
+        self._attr_native_value = None
 
 class EspuinoLoudnessSensor(EspuinoSimpleSensor):
     def __init__(self, entry: ConfigEntry):

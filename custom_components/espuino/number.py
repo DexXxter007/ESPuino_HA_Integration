@@ -78,3 +78,7 @@ class EspuinoLedBrightnessNumber(EspuinoMqttEntity, NumberEntity):
         """Update the current value."""
         payload = str(int(value)) # ESPuino erwartet einen Integer-String
         await self.async_publish_mqtt(self._command_topic_suffix, payload)
+
+    @callback
+    def _clear_entity_state(self):
+        self._attr_native_value = None
