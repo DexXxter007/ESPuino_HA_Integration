@@ -100,12 +100,21 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 new_options = dict(self._config_entry.options)
                 new_options[CONF_TOPIC_PREFIX] = user_input.get(CONF_TOPIC_PREFIX, self._config_entry.options.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX))
 
-                # Apply updates
-                self.hass.config_entries.async_update_entry(self._config_entry, data=new_data, options=new_options)
-                # Reload the entry to ensure platforms and entities reflect the new device_name
+                # Apply updates (do NOT change the entry unique_id to avoid creating duplicates)
+                self.hass.config_entries.async_update_entry(
+                    self._config_entry, data=new_data, options=new_options
+                )
+                _LOGGER.info("Updated ESPuino config entry %s: device_name=%s, topic_prefix=%s", self._config_entry.entry_id, new_data.get(CONF_DEVICE_NAME), new_options.get(CONF_TOPIC_PREFIX))
+
+                # Refresh local reference to the updated entry and reload
+                updated_entry = self.hass.config_entries.async_get_entry(self._config_entry.entry_id)
+                if updated_entry is not None:
+                    self._config_entry = updated_entry
+
                 await self.hass.config_entries.async_reload(self._config_entry.entry_id)
 
-                return self.async_create_entry(title="", data={})
+                # Return an options create_entry that contains the saved options so the options store matches what we saved
+                return self.async_create_entry(title="", data={CONF_TOPIC_PREFIX: new_options.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX)})
 
             # Safely compute the current values for display in the form
             current_prefix = self._config_entry.options.get(
