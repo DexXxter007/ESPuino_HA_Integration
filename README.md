@@ -83,8 +83,32 @@ Below is an example snippet that shows how to define MQTT topics:
   constexpr uint16_t mqttRetryInterval = 60;
   constexpr uint8_t mqttMaxRetriesPerInterval = 1;
   #define DEVICE_HOSTNAME "ESP32-ESPuino" // Default MQTT ID
-  constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino/Sleep";
-  constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
+  constexpr const char topicSleepCmnd[] = "media/ESP32/ESP32-ESPuino/sleep/set";
+  constexpr const char topicSleepState[] = "media/ESP32/ESP32-ESPuino/sleep";
+
+Note: By default there is no topic prefix — topics are in the form `<device_id>/<state>` for state updates and `<device_id>/<command>/set` for commands. If you prefer a prefixed structure you can set `topic_prefix` to something like `media/ESP32`, which will result in `media/ESP32/<device_id>/<state>` and `media/ESP32/<device_id>/<command>/set`.
+
+For example (default, no prefix):
+```
+// Commands:
+ESPuino-AABBCCDDEEFF/sleep/set
+ESPuino-AABBCCDDEEFF/rfid/set
+// States:
+ESPuino-AABBCCDDEEFF/sleep
+ESPuino-AABBCCDDEEFF/rfid
+ESPuino-AABBCCDDEEFF/track
+```
+
+For example (with `topic_prefix = "media/ESP32"`):
+```
+// Commands:
+media/ESP32/ESPuino-AABBCCDDEEFF/sleep/set
+media/ESP32/ESPuino-AABBCCDDEEFF/rfid/set
+// States:
+media/ESP32/ESPuino-AABBCCDDEEFF/sleep
+media/ESP32/ESPuino-AABBCCDDEEFF/rfid
+media/ESP32/ESPuino-AABBCCDDEEFF/track
+```
 ```
 ## ⚠️ Important for multi-device setups
 
@@ -98,8 +122,8 @@ For example:
   constexpr uint16_t mqttRetryInterval = 60;
   constexpr uint8_t mqttMaxRetriesPerInterval = 1;
   #define DEVICE_HOSTNAME "ESP32-ESPuino_Paul" // Change Name
-  constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino_Paul/Sleep";
-  constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
+  constexpr const char topicSleepCmnd[] = "media/ESP32/ESP32-ESPuino_Paul/sleep/set";
+  constexpr const char topicSleepState[] = "media/ESP32/ESP32-ESPuino_Paul/sleep";
 ```
 
 <img src="image/2.png" alt="add Name" width="300"/>

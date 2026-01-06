@@ -4,7 +4,7 @@ from homeassistant.helpers.typing import DiscoveryInfoType, ConfigType
 from typing import Any, Dict, Optional
 
 import voluptuous as vol
-from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, DEFAULT_MQTT_BASE_TOPIC
+from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, DEFAULT_MQTT_TOPIC_PREFIX
 
 class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -46,6 +46,8 @@ class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_DEVICE_NAME, default=device_name_default): str,
                     # User-friendly name for display in Home Assistant
                     vol.Required(CONF_FRIENDLY_NAME, default=friendly_name_default): str,
+                    # Optional topic prefix override (e.g., media/ESP32)
+                    vol.Optional(CONF_TOPIC_PREFIX, default=DEFAULT_MQTT_TOPIC_PREFIX): str,
                 }
             ),
             errors=errors,

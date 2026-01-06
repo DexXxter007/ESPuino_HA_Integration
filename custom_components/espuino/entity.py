@@ -8,7 +8,7 @@ from homeassistant.components.mqtt import (
     async_subscribe as mqtt_async_subscribe,
     async_publish as mqtt_async_publish
 )
-from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, DEFAULT_MQTT_BASE_TOPIC, STATE_SUFFIX_ONLINE_STATE, PAYLOAD_ONLINE, PAYLOAD_OFFLINE
+from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX, STATE_SUFFIX_ONLINE_STATE, PAYLOAD_ONLINE, PAYLOAD_OFFLINE
 
 _LOGGER = logging.getLogger(__name__) # Initialize logger for this module
 
@@ -20,9 +20,10 @@ class EspuinoMqttEntity(Entity):
         self._entry = entry
         self._attr_has_entity_name = True # For newer HA versions, uses entity_description.name
 
-        # Get the configured names
+        # Get the configured names and topic prefix
         self._device_name = entry.data[CONF_DEVICE_NAME]
         self._friendly_name = entry.data.get(CONF_FRIENDLY_NAME, self._device_name) # Fallback to device_name if friendly_name is somehow missing
+        self._topic_prefix = entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX) # allows overriding the default prefix per-entry
 
         # entry.unique_id from config_flow is now self._device_name
         # entity_description_key should be unique per entity type (e.g., "track_state", "loudness")
@@ -60,14 +61,25 @@ class EspuinoMqttEntity(Entity):
         )
 
     def _get_full_state_topic(self, state_topic_suffix_const: str) -> str:
-        """Construct the full MQTT state topic using the configured device name."""
+        """Construct the full MQTT state topic using the configured device name and topic prefix.
+
+        If `topic_prefix` is empty the topic will be: <device>/<state>
+        Otherwise: <prefix>/<device>/<state>
+        """
         # state_topic_suffix_const is one of the STATE_SUFFIX_... from const.py
-        return f"State/{self._device_name}/{state_topic_suffix_const}"
+        if self._topic_prefix:
+            return f"{self._topic_prefix}/{self._device_name}/{state_topic_suffix_const}"
+        return f"{self._device_name}/{state_topic_suffix_const}"
 
     def _get_full_command_topic(self, command_topic_suffix_const: str) -> str:
-        """Construct the full MQTT command topic using the fixed base 'espuino' and configured device name."""
+        """Construct the full MQTT command topic using the configured topic prefix.
+
+        Command topics are located at: <prefix>/<device>/<command>/set (or <device>/<command>/set if prefix is empty)
+        """
         # command_topic_suffix_const is one of the TOPIC_..._CMND from const.py
-        return f"{DEFAULT_MQTT_BASE_TOPIC}/{self._device_name}/{command_topic_suffix_const}"
+        if self._topic_prefix:
+            return f"{self._topic_prefix}/{self._device_name}/{command_topic_suffix_const}/set"
+        return f"{self._device_name}/{command_topic_suffix_const}/set"
 
     async def async_subscribe_to_topic(self, topic_suffix: str, msg_callback=None):
         """Subscribe to a specific MQTT state topic suffix (from STATE_SUFFIX_... constants)."""

@@ -1,37 +1,39 @@
 DOMAIN = "espuino"
 CONF_DEVICE_NAME = "device_name" # Neuer Name für die Konfiguration
 CONF_FRIENDLY_NAME = "friendly_name" # Anzeigename in Home Assistant
+CONF_TOPIC_PREFIX = "topic_prefix" # Optional override for the MQTT topic prefix (defaults to empty - no prefix)
 
-DEFAULT_MQTT_BASE_TOPIC = "Cmnd" # Basis für Command-Topics, z.B. Cmnd/<device_name>/...
-# This will be the first segment for COMMAND topics: espuino/<device_name>/...
+DEFAULT_MQTT_TOPIC_PREFIX = "" # Default: empty (no topic prefix). Set to e.g. "media/ESP32" to use that prefix.
+# Command topics will be under <prefix>/<device>/<command>/set and state topics under <prefix>/<device>/<state>
 
 
-STATE_SUFFIX_LOUDNESS = "Loudness"
-STATE_SUFFIX_WIFI_RSSI = "WifiRssi"
-STATE_SUFFIX_RFID = "Rfid"
-STATE_SUFFIX_PLAYMODE = "Playmode"
-STATE_SUFFIX_REPEAT_MODE = "RepeatMode" 
-STATE_SUFFIX_TRACK = "Track"
-STATE_SUFFIX_BATTERY_SOC = "BatterySOC" # Annahme, basierend auf vorherigen Infos
-STATE_SUFFIX_BATTERY_VOLTAGE = "BatteryVoltage" # Annahme
-STATE_SUFFIX_SREVISION = "SoftwareRevision" # Annahme
-STATE_SUFFIX_SLEEP_TIMER = "SleepTimer" # Annahme
-STATE_SUFFIX_CURRENT_IP = "IP"
-STATE_SUFFIX_ONLINE_STATE = "State" # Annahme für topicState (Online/Offline)
-STATE_SUFFIX_SLEEP_STATE = "Sleep" # Annahme für topicSleepState (ON/OFF)
-STATE_SUFFIX_LOCK_CONTROLS = "LockControls" # Annahme
-STATE_SUFFIX_PLAYBACK_STATE = "PlaybackState" # Für Play, Pause, Stop Status
+STATE_SUFFIX_LOUDNESS = "loudness"
+STATE_SUFFIX_WIFI_RSSI = "wifi_rssi"
+STATE_SUFFIX_RFID = "rfid"
+STATE_SUFFIX_PLAYMODE = "playmode"
+STATE_SUFFIX_REPEAT_MODE = "repeatmode"
+STATE_SUFFIX_TRACK = "track"
+STATE_SUFFIX_BATTERY_SOC = "battery_soc"
+STATE_SUFFIX_BATTERY_VOLTAGE = "battery_voltage"
+STATE_SUFFIX_SREVISION = "software_revision"
+STATE_SUFFIX_SLEEP_TIMER = "sleep_timer"
+STATE_SUFFIX_CURRENT_IP = "ipv4"
+STATE_SUFFIX_ONLINE_STATE = "state" # topic for Online/Offline
+STATE_SUFFIX_SLEEP_STATE = "sleep"
+STATE_SUFFIX_LOCK_CONTROLS = "lock_controls"
+STATE_SUFFIX_PLAYBACK_STATE = "pauseplay" # pause/play topic
+STATE_SUFFIX_COVER_CHANGED = "cover_changed"
+STATE_SUFFIX_LED_BRIGHTNESS = "led_brightness"
 
 PAYLOAD_ONLINE = "Online"
 PAYLOAD_OFFLINE = "Offline"
-STATE_SUFFIX_LED_BRIGHTNESS = "LedBrightness" # Annahme
 
-# --- Suffixes for COMMAND topics (will be prefixed with CONF_MQTT_BASE_TOPIC) ---
-TOPIC_SLEEP_CMND = "Sleep"
-TOPIC_RFID_CMND = "Rfid"
-TOPIC_TRACK_CONTROL_CMND = "TrackControl"
-TOPIC_LOUDNESS_CMND = "Loudness"
-TOPIC_SLEEP_TIMER_CMND = "SleepTimer"
-TOPIC_LOCK_CONTROLS_CMND = "LockControls"
-TOPIC_REPEAT_MODE_CMND = "RepeatMode"
-COMMAND_SUFFIX_LED_BRIGHTNESS = "LedBrightness" # Befehl zum Setzen der LED Helligkeit
+# --- Names for COMMAND topics (used under <prefix>/<device>/<command>/set) ---
+TOPIC_SLEEP_CMND = "sleep"
+TOPIC_RFID_CMND = "rfid"
+TOPIC_TRACK_CONTROL_CMND = "trackcontrol"
+TOPIC_LOUDNESS_CMND = "loudness"
+TOPIC_SLEEP_TIMER_CMND = "sleep_timer"
+TOPIC_LOCK_CONTROLS_CMND = "lock_controls"
+TOPIC_REPEAT_MODE_CMND = "repeatmode"
+TOPIC_LED_BRIGHTNESS_CMND = "led_brightness" # command to set led brightness
