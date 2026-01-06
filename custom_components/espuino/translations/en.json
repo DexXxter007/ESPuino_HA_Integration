@@ -13,5 +13,18 @@
     "abort": {
       "already_configured": "An ESPuino with this device name is already configured."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ESPuino Options",
+        "description": "Optional: MQTT topic prefix. Empty means no prefix (e.g., \"media/ESP32\").",
+        "data": {
+          "topic_prefix": "Topic prefix (e.g., media/ESP32)",
+          "device_name": "MQTT device name (ID)",
+          "friendly_name": "Display name in Home Assistant"
+        }
+      }
+    }
   }
 }

@@ -3,8 +3,11 @@ from homeassistant.core import callback
 from homeassistant.helpers.typing import DiscoveryInfoType, ConfigType
 from typing import Any, Dict, Optional
 
+import logging
 import voluptuous as vol
 from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX
+
+_LOGGER = logging.getLogger(__name__)
 
 class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -53,36 +56,88 @@ class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: config_entries.ConfigEntry):
+        """Return an options flow handler for this config entry."""
+        return OptionsFlowHandler(config_entry)
+
 
 class OptionsFlowHandler(config_entries.OptionsFlow):
     """Handle options for the ESPuino integration."""
 
     def __init__(self, config_entry: config_entries.ConfigEntry):
-        self.config_entry = config_entry
+        # Avoid assigning to the base class' `config_entry` attribute which may be a read-only property.
+        self._config_entry = config_entry
 
     async def async_step_init(self, user_input: Optional[Dict[str, Any]] = None) -> config_entries.FlowResult:
         """Manage the options flow."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
+        try:
+            if user_input is not None:
+                # Validate device_name uniqueness against other entries
+                new_device = user_input.get(CONF_DEVICE_NAME, "").strip()
+                for entry in self.hass.config_entries.async_entries(DOMAIN):
+                    if entry.entry_id == self._config_entry.entry_id:
+                        continue
+                    if entry.data.get(CONF_DEVICE_NAME) == new_device:
+                        return self.async_show_form(
+                            step_id="init",
+                            data_schema=vol.Schema(
+                                {
+                                    vol.Required(CONF_DEVICE_NAME, default=new_device): str,
+                                    vol.Required(CONF_FRIENDLY_NAME, default=user_input.get(CONF_FRIENDLY_NAME, "")): str,
+                                    vol.Optional(CONF_TOPIC_PREFIX, default=user_input.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX)): str,
+                                }
+                            ),
+                            errors={CONF_DEVICE_NAME: "already_configured"},
+                        )
 
-        current = self.config_entry.options.get(
-            CONF_TOPIC_PREFIX,
-            self.config_entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX),
-        )
+                # Persist data and options: update data (device_name/friendly_name) and options (topic_prefix)
+                new_data = dict(self._config_entry.data)
+                new_data[CONF_DEVICE_NAME] = user_input.get(CONF_DEVICE_NAME, new_data.get(CONF_DEVICE_NAME))
+                new_data[CONF_FRIENDLY_NAME] = user_input.get(CONF_FRIENDLY_NAME, new_data.get(CONF_FRIENDLY_NAME))
 
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(CONF_TOPIC_PREFIX, default=current): str,
-                }
-            ),
-        )
+                new_options = dict(self._config_entry.options)
+                new_options[CONF_TOPIC_PREFIX] = user_input.get(CONF_TOPIC_PREFIX, self._config_entry.options.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX))
+
+                # Apply updates
+                self.hass.config_entries.async_update_entry(self._config_entry, data=new_data, options=new_options)
+                # Reload the entry to ensure platforms and entities reflect the new device_name
+                await self.hass.config_entries.async_reload(self._config_entry.entry_id)
+
+                return self.async_create_entry(title="", data={})
+
+            # Safely compute the current values for display in the form
+            current_prefix = self._config_entry.options.get(
+                CONF_TOPIC_PREFIX,
+                self._config_entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX),
+            )
+            current_device = self._config_entry.data.get(CONF_DEVICE_NAME, "")
+            current_friendly = self._config_entry.data.get(CONF_FRIENDLY_NAME, "")
+
+            return self.async_show_form(
+                step_id="init",
+                data_schema=vol.Schema(
+                    {
+                        vol.Required(CONF_DEVICE_NAME, default=current_device): str,
+                        vol.Required(CONF_FRIENDLY_NAME, default=current_friendly): str,
+                        vol.Optional(CONF_TOPIC_PREFIX, default=current_prefix): str,
+                    }
+                ),
+            )
+        except Exception as err:  # Defensive: don't let exceptions bubble up to HA resulting in HTTP 500
+            _LOGGER.exception("Error showing options flow for %s: %s", getattr(self._config_entry, "entry_id", "unknown"), err)
+            return self.async_show_form(
+                step_id="init",
+                data_schema=vol.Schema(
+                    {
+                        vol.Required(CONF_DEVICE_NAME, default=self._config_entry.data.get(CONF_DEVICE_NAME, "")): str,
+                        vol.Required(CONF_FRIENDLY_NAME, default=self._config_entry.data.get(CONF_FRIENDLY_NAME, "")): str,
+                        vol.Optional(CONF_TOPIC_PREFIX, default=DEFAULT_MQTT_TOPIC_PREFIX): str,
+                    }
+                ),
+                errors={"base": "unknown"},
+            )
 
 
-# Register options flow with the main ConfigFlow class
-@staticmethod
-@callback
-def async_get_options_flow(config_entry: config_entries.ConfigEntry):
-    return OptionsFlowHandler(config_entry)
 
