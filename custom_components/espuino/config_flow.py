@@ -6,6 +6,8 @@ from typing import Any, Dict, Optional
 import logging
 import voluptuous as vol
 from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import device_registry as dr
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -93,14 +95,51 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                         )
 
                 # Persist data and options: update data (device_name/friendly_name) and options (topic_prefix)
+                old_device = self._config_entry.data.get(CONF_DEVICE_NAME)
+
                 new_data = dict(self._config_entry.data)
-                new_data[CONF_DEVICE_NAME] = user_input.get(CONF_DEVICE_NAME, new_data.get(CONF_DEVICE_NAME))
+                new_data[CONF_DEVICE_NAME] = user_input.get(CONF_DEVICE_NAME, new_data.get(CONF_DEVICE_NAME)).strip()
                 new_data[CONF_FRIENDLY_NAME] = user_input.get(CONF_FRIENDLY_NAME, new_data.get(CONF_FRIENDLY_NAME))
 
-                new_options = dict(self._config_entry.options)
-                new_options[CONF_TOPIC_PREFIX] = user_input.get(CONF_TOPIC_PREFIX, self._config_entry.options.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX))
+                # Normalize topic prefix: trim whitespace and any leading/trailing slashes
+                raw_prefix = user_input.get(CONF_TOPIC_PREFIX, self._config_entry.options.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX))
+                if raw_prefix is None:
+                    normalized_prefix = DEFAULT_MQTT_TOPIC_PREFIX
+                else:
+                    normalized_prefix = raw_prefix.strip().strip('/')
+                    if normalized_prefix == "":
+                        normalized_prefix = DEFAULT_MQTT_TOPIC_PREFIX
 
-                # Apply updates (do NOT change the entry unique_id to avoid creating duplicates)
+                new_options = dict(self._config_entry.options)
+                new_options[CONF_TOPIC_PREFIX] = normalized_prefix
+
+                # If the device name changed, migrate entity unique_ids and device registry identifiers so
+                # Home Assistant renames the existing entities/devices instead of creating new ones.
+                new_device = new_data.get(CONF_DEVICE_NAME)
+                if new_device and old_device and new_device != old_device:
+                    try:
+                        entity_registry = er.async_get(self.hass)
+                        # Iterate over all entries and migrate those belonging to this config entry
+                        for ent in list(entity_registry.entities.values()):
+                            if ent.config_entry_id != self._config_entry.entry_id:
+                                continue
+                            if ent.unique_id and ent.unique_id.startswith(f"{old_device}_"):
+                                new_unique_id = ent.unique_id.replace(f"{old_device}_", f"{new_device}_", 1)
+                                entity_registry.async_update_entity(ent.entity_id, new_unique_id=new_unique_id)
+                                _LOGGER.info("Migrated entity unique_id %s -> %s", ent.unique_id, new_unique_id)
+
+                        device_registry = dr.async_get(self.hass)
+                        device = device_registry.async_get_device(identifiers={(DOMAIN, old_device)})
+                        if device:
+                            device_registry.async_update_device(device.id, new_identifiers={(DOMAIN, new_device)})
+                            _LOGGER.info("Updated device registry identifiers %s -> %s", old_device, new_device)
+
+                        # Also update the config entry unique_id to match the new device name
+                        self.hass.config_entries.async_update_entry(self._config_entry, unique_id=new_device)
+                    except Exception as err:
+                        _LOGGER.exception("Error migrating device/entities for rename %s -> %s: %s", old_device, new_device, err)
+
+                # Apply updates
                 self.hass.config_entries.async_update_entry(
                     self._config_entry, data=new_data, options=new_options
                 )

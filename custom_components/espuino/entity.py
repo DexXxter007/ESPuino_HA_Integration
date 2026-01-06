@@ -28,6 +28,9 @@ class EspuinoMqttEntity(Entity):
             CONF_TOPIC_PREFIX,
             entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX),
         )
+        # Normalize topic prefix: remove leading/trailing whitespace and slashes to avoid accidental empty path segments
+        if isinstance(self._topic_prefix, str) and self._topic_prefix:
+            self._topic_prefix = self._topic_prefix.strip().strip('/')
 
         # entry.unique_id from config_flow is now self._device_name
         # entity_description_key should be unique per entity type (e.g., "track_state", "loudness")

@@ -18,7 +18,7 @@
     "step": {
       "init": {
         "title": "ESPuino Optionen",
-        "description": "Optional: MQTT Topic-Präfix. Leer bedeutet kein Präfix (z. B. \"media/ESP32\").",
+        "description": "Optional: MQTT Topic-Präfix. Leer bedeutet kein Präfix (z. B. \"media/ESP32\"). Führende/abschließende Schrägstriche werden entfernt.",
         "data": {
           "topic_prefix": "Topic-Präfix (z. B. media/ESP32)",
           "device_name": "MQTT Gerätename (ID)",

@@ -18,7 +18,7 @@
     "step": {
       "init": {
         "title": "ESPuino Options",
-        "description": "Optional: MQTT topic prefix. Empty means no prefix (e.g., \"media/ESP32\").",
+        "description": "Optional: MQTT topic prefix. Empty means no prefix (e.g., \"media/ESP32\"). Leading/trailing slashes are removed.",
         "data": {
           "topic_prefix": "Topic prefix (e.g., media/ESP32)",
           "device_name": "MQTT device name (ID)",
