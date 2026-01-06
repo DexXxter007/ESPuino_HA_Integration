@@ -9,7 +9,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
     STATE_SUFFIX_LED_BRIGHTNESS,
-    COMMAND_SUFFIX_LED_BRIGHTNESS,
+    TOPIC_LED_BRIGHTNESS_CMND,
 )
 from .entity import EspuinoMqttEntity
 
@@ -43,7 +43,7 @@ class EspuinoLedBrightnessNumber(EspuinoMqttEntity, NumberEntity):
         self._attr_icon = "mdi:brightness-6"
 
         self._state_topic_suffix = STATE_SUFFIX_LED_BRIGHTNESS
-        self._command_topic_suffix = COMMAND_SUFFIX_LED_BRIGHTNESS
+        self._command_topic_suffix = TOPIC_LED_BRIGHTNESS_CMND
 
         self._attr_native_min_value = DEFAULT_MIN_BRIGHTNESS
         self._attr_native_max_value = DEFAULT_MAX_BRIGHTNESS

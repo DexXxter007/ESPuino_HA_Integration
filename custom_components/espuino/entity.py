@@ -8,7 +8,7 @@ from homeassistant.components.mqtt import (
     async_subscribe as mqtt_async_subscribe,
     async_publish as mqtt_async_publish
 )
-from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX, STATE_SUFFIX_ONLINE_STATE, PAYLOAD_ONLINE, PAYLOAD_OFFLINE
+from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX, STATE_SUFFIX_ONLINE_STATE, PAYLOAD_ONLINE, PAYLOAD_OFFLINE, SETTER_TOKEN
 
 _LOGGER = logging.getLogger(__name__) # Initialize logger for this module
 
@@ -78,8 +78,8 @@ class EspuinoMqttEntity(Entity):
         """
         # command_topic_suffix_const is one of the TOPIC_..._CMND from const.py
         if self._topic_prefix:
-            return f"{self._topic_prefix}/{self._device_name}/{command_topic_suffix_const}/set"
-        return f"{self._device_name}/{command_topic_suffix_const}/set"
+            return f"{self._topic_prefix}/{self._device_name}/{command_topic_suffix_const}/{SETTER_TOKEN}"
+        return f"{self._device_name}/{command_topic_suffix_const}/{SETTER_TOKEN}"
 
     async def async_subscribe_to_topic(self, topic_suffix: str, msg_callback=None):
         """Subscribe to a specific MQTT state topic suffix (from STATE_SUFFIX_... constants)."""

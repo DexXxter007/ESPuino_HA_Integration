@@ -5,7 +5,7 @@ CONF_TOPIC_PREFIX = "topic_prefix" # Optional override for the MQTT topic prefix
 
 DEFAULT_MQTT_TOPIC_PREFIX = "" # Default: empty (no topic prefix). Set to e.g. "media/ESP32" to use that prefix.
 # Command topics will be under <prefix>/<device>/<command>/set and state topics under <prefix>/<device>/<state>
-
+SETTER_TOKEN = "set"
 
 STATE_SUFFIX_LOUDNESS = "loudness"
 STATE_SUFFIX_WIFI_RSSI = "wifi_rssi"

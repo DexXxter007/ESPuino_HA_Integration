@@ -5,7 +5,7 @@
         "title": "Configure ESPuino",
         "description": "Please enter the details for your ESPuino device.",
         "data": {
-          "device_name": "MQTT device name (ID), default: ESPuino",
+          "device_name": "MQTT device name (ID), default: ESPuino-XXXXXX",
           "friendly_name": "Display name in Home Assistant"
         }
       }

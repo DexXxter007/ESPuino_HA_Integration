@@ -66,7 +66,7 @@ After restarting Home Assistant:
 
 1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **ESPuino Integration**
-3. Enter a Name manually, 
+3. Enter a Name manually (check your device-id in the webserver), 
 4. You're done – entities will be created automatically
 
 <img src="image/1.png" alt="Default Config" width="300"/>
@@ -110,23 +110,6 @@ media/ESP32/ESPuino-AABBCCDDEEFF/rfid
 media/ESP32/ESPuino-AABBCCDDEEFF/track
 ```
 ```
-## ⚠️ Important for multi-device setups
-
-The default MQTT ID is ESPuino.
-If you're using multiple ESPuino devices, each one must have a unique MQTT ID.
-To do this, change DEVICE_HOSTNAME in settings.h and adjust all MQTT topics accordingly.
-
-For example:
-```cpp
-#ifdef MQTT_ENABLE
-  constexpr uint16_t mqttRetryInterval = 60;
-  constexpr uint8_t mqttMaxRetriesPerInterval = 1;
-  #define DEVICE_HOSTNAME "ESP32-ESPuino_Paul" // Change Name
-  constexpr const char topicSleepCmnd[] = "media/ESP32/ESP32-ESPuino_Paul/sleep/set";
-  constexpr const char topicSleepState[] = "media/ESP32/ESP32-ESPuino_Paul/sleep";
-```
-
-<img src="image/2.png" alt="add Name" width="300"/>
 
 
 ---
