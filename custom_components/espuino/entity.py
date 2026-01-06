@@ -23,7 +23,11 @@ class EspuinoMqttEntity(Entity):
         # Get the configured names and topic prefix
         self._device_name = entry.data[CONF_DEVICE_NAME]
         self._friendly_name = entry.data.get(CONF_FRIENDLY_NAME, self._device_name) # Fallback to device_name if friendly_name is somehow missing
-        self._topic_prefix = entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX) # allows overriding the default prefix per-entry
+        # Allow runtime override via options flow; fall back to config data or default
+        self._topic_prefix = entry.options.get(
+            CONF_TOPIC_PREFIX,
+            entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX),
+        )
 
         # entry.unique_id from config_flow is now self._device_name
         # entity_description_key should be unique per entity type (e.g., "track_state", "loudness")

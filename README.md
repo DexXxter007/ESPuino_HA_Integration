@@ -88,6 +88,7 @@ Below is an example snippet that shows how to define MQTT topics:
 
 Note: By default there is no topic prefix — topics are in the form `<device_id>/<state>` for state updates and `<device_id>/<command>/set` for commands. If you prefer a prefixed structure you can set `topic_prefix` to something like `media/ESP32`, which will result in `media/ESP32/<device_id>/<state>` and `media/ESP32/<device_id>/<command>/set`.
 
+You can change the `topic_prefix` after installation from Home Assistant: go to Settings → Devices & Services → ESPuino → Configure and edit the Topic Prefix option.
 For example (default, no prefix):
 ```
 // Commands:

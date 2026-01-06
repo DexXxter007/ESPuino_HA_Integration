@@ -4,7 +4,7 @@ from homeassistant.helpers.typing import DiscoveryInfoType, ConfigType
 from typing import Any, Dict, Optional
 
 import voluptuous as vol
-from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, DEFAULT_MQTT_TOPIC_PREFIX
+from .const import DOMAIN, CONF_DEVICE_NAME, CONF_FRIENDLY_NAME, CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX
 
 class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -52,3 +52,37 @@ class EspuinoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             ),
             errors=errors,
         )
+
+
+class OptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle options for the ESPuino integration."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry):
+        self.config_entry = config_entry
+
+    async def async_step_init(self, user_input: Optional[Dict[str, Any]] = None) -> config_entries.FlowResult:
+        """Manage the options flow."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        current = self.config_entry.options.get(
+            CONF_TOPIC_PREFIX,
+            self.config_entry.data.get(CONF_TOPIC_PREFIX, DEFAULT_MQTT_TOPIC_PREFIX),
+        )
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(CONF_TOPIC_PREFIX, default=current): str,
+                }
+            ),
+        )
+
+
+# Register options flow with the main ConfigFlow class
+@staticmethod
+@callback
+def async_get_options_flow(config_entry: config_entries.ConfigEntry):
+    return OptionsFlowHandler(config_entry)
+
