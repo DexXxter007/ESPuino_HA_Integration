@@ -5,13 +5,26 @@
         "title": "Configure ESPuino",
         "description": "Please enter the details for your ESPuino device.",
         "data": {
-          "device_name": "MQTT device name (ID), default: ESPuino",
+          "device_name": "MQTT device name (ID), default: ESPuino-XXXXXX",
           "friendly_name": "Display name in Home Assistant"
         }
       }
     },
     "abort": {
       "already_configured": "An ESPuino with this device name is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ESPuino Options",
+        "description": "Optional: MQTT topic prefix. Empty means no prefix (e.g., \"media/ESP32\"). Leading/trailing slashes are removed.",
+        "data": {
+          "topic_prefix": "Topic prefix (e.g., media/ESP32)",
+          "device_name": "MQTT device name (ID)",
+          "friendly_name": "Display name in Home Assistant"
+        }
+      }
     }
   }
 }

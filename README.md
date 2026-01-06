@@ -66,7 +66,7 @@ After restarting Home Assistant:
 
 1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **ESPuino Integration**
-3. Enter a Name manually, 
+3. Enter a Name manually (check your device-id in the webserver), 
 4. You're done – entities will be created automatically
 
 <img src="image/1.png" alt="Default Config" width="300"/>
@@ -74,35 +74,33 @@ After restarting Home Assistant:
 
 ## 📡 Required ESPuino MQTT Configuration
 
-For this integration to work correctly, your `settings.h` file in the ESPuino firmware must be properly configured with MQTT support.
+For this integration to work correctly, your have to configure mqtt in the webserver of the ESPuino (MQTT-Tab).
 
-Below is an example snippet that shows how to define MQTT topics:
+Note: By default there is no topic prefix — topics are in the form `<device_id>/<state>` for state updates and `<device_id>/<command>/set` for commands. If you prefer a prefixed structure you can set `topic_prefix` to something like `home/media`, which will result in `home/media/<device_id>/<state>` and `home/media/<device_id>/<command>/set`.
 
-```cpp
-#ifdef MQTT_ENABLE
-  constexpr uint16_t mqttRetryInterval = 60;
-  constexpr uint8_t mqttMaxRetriesPerInterval = 1;
-  #define DEVICE_HOSTNAME "ESP32-ESPuino" // Default MQTT ID
-  constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino/Sleep";
-  constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
+You can change the `topic_prefix` after installation from Home Assistant: go to Settings → Devices & Services → ESPuino → Configure and edit the Topic Prefix option.
+For example (default, no prefix):
 ```
-## ⚠️ Important for multi-device setups
-
-The default MQTT ID is ESPuino.
-If you're using multiple ESPuino devices, each one must have a unique MQTT ID.
-To do this, change DEVICE_HOSTNAME in settings.h and adjust all MQTT topics accordingly.
-
-For example:
-```cpp
-#ifdef MQTT_ENABLE
-  constexpr uint16_t mqttRetryInterval = 60;
-  constexpr uint8_t mqttMaxRetriesPerInterval = 1;
-  #define DEVICE_HOSTNAME "ESP32-ESPuino_Paul" // Change Name
-  constexpr const char topicSleepCmnd[] = "Cmnd/ESPuino_Paul/Sleep";
-  constexpr const char topicSleepState[] = "State/ESPuino/Sleep";
+// Commands:
+ESPuino-AABBCCDDEEFF/sleep/set
+ESPuino-AABBCCDDEEFF/rfid/set
+// States:
+ESPuino-AABBCCDDEEFF/sleep
+ESPuino-AABBCCDDEEFF/rfid
+ESPuino-AABBCCDDEEFF/track
 ```
 
-<img src="image/2.png" alt="add Name" width="300"/>
+For example (with `topic_prefix = "home/media"`):
+```
+// Commands:
+home/media/ESPuino-AABBCCDDEEFF/sleep/set
+home/media/ESPuino-AABBCCDDEEFF/rfid/set
+// States:
+home/media/ESPuino-AABBCCDDEEFF/sleep
+home/media/ESPuino-AABBCCDDEEFF/rfid
+home/media/ESPuino-AABBCCDDEEFF/track
+```
+```
 
 
 ---
