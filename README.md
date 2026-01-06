@@ -74,19 +74,9 @@ After restarting Home Assistant:
 
 ## 📡 Required ESPuino MQTT Configuration
 
-For this integration to work correctly, your `settings.h` file in the ESPuino firmware must be properly configured with MQTT support.
+For this integration to work correctly, your have to configure mqtt in the webserver of the ESPuino (MQTT-Tab).
 
-Below is an example snippet that shows how to define MQTT topics:
-
-```cpp
-#ifdef MQTT_ENABLE
-  constexpr uint16_t mqttRetryInterval = 60;
-  constexpr uint8_t mqttMaxRetriesPerInterval = 1;
-  #define DEVICE_HOSTNAME "ESP32-ESPuino" // Default MQTT ID
-  constexpr const char topicSleepCmnd[] = "media/ESP32/ESP32-ESPuino/sleep/set";
-  constexpr const char topicSleepState[] = "media/ESP32/ESP32-ESPuino/sleep";
-
-Note: By default there is no topic prefix — topics are in the form `<device_id>/<state>` for state updates and `<device_id>/<command>/set` for commands. If you prefer a prefixed structure you can set `topic_prefix` to something like `media/ESP32`, which will result in `media/ESP32/<device_id>/<state>` and `media/ESP32/<device_id>/<command>/set`.
+Note: By default there is no topic prefix — topics are in the form `<device_id>/<state>` for state updates and `<device_id>/<command>/set` for commands. If you prefer a prefixed structure you can set `topic_prefix` to something like `home/media`, which will result in `home/media/<device_id>/<state>` and `home/media/<device_id>/<command>/set`.
 
 You can change the `topic_prefix` after installation from Home Assistant: go to Settings → Devices & Services → ESPuino → Configure and edit the Topic Prefix option.
 For example (default, no prefix):
@@ -100,15 +90,15 @@ ESPuino-AABBCCDDEEFF/rfid
 ESPuino-AABBCCDDEEFF/track
 ```
 
-For example (with `topic_prefix = "media/ESP32"`):
+For example (with `topic_prefix = "home/media"`):
 ```
 // Commands:
-media/ESP32/ESPuino-AABBCCDDEEFF/sleep/set
-media/ESP32/ESPuino-AABBCCDDEEFF/rfid/set
+home/media/ESPuino-AABBCCDDEEFF/sleep/set
+home/media/ESPuino-AABBCCDDEEFF/rfid/set
 // States:
-media/ESP32/ESPuino-AABBCCDDEEFF/sleep
-media/ESP32/ESPuino-AABBCCDDEEFF/rfid
-media/ESP32/ESPuino-AABBCCDDEEFF/track
+home/media/ESPuino-AABBCCDDEEFF/sleep
+home/media/ESPuino-AABBCCDDEEFF/rfid
+home/media/ESPuino-AABBCCDDEEFF/track
 ```
 ```
 
